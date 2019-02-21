@@ -3,6 +3,7 @@ package com.revature.eval.java.core;
 import java.time.temporal.Temporal;
 import java.util.List;
 import java.util.Map;
+import java.lang.IllegalArgumentException;
 
 public class EvaluationService {
 
@@ -15,7 +16,14 @@ public class EvaluationService {
 	 */
 	public String reverse(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		if ("".equals(string))
+			return string;
+		String result = "";
+		for (int i = string.length() - 1; i >= 0; --i)
+		{
+			result += string.charAt(i);
+		}
+		return result;
 	}
 
 	/**
@@ -28,7 +36,19 @@ public class EvaluationService {
 	 */
 	public String acronym(String phrase) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		if (phrase == null)
+			return null;
+		if ("".equals(phrase))
+			return phrase;
+		String[] split = phrase.split("\\W");
+		String result = "";
+		for(int i = 0; i < split.length; ++i)
+		{
+			if (!split[i].equals(""))
+				result += split[i].charAt(0);
+		}
+		
+		return result.toUpperCase();
 	}
 
 	/**
@@ -82,16 +102,34 @@ public class EvaluationService {
 
 		public boolean isEquilateral() {
 			// TODO Write an implementation for this method declaration
-			return false;
+			if ((int)(sideOne - sideTwo + sideThree) == 0)
+				return true;
+			else
+				return false;
 		}
 
 		public boolean isIsosceles() {
 			// TODO Write an implementation for this method declaration
+			if ((int)(sideOne - sideTwo) == 0)
+			{
+				if ((int)(sideOne - sideThree) == 0)
+					return true;
+				else if ((int)(sideTwo - sideThree) == 0)
+					return true;
+			}
 			return false;
 		}
 
 		public boolean isScalene() {
 			// TODO Write an implementation for this method declaration
+			if (sideOne != sideTwo)
+			{
+				if (sideOne != sideThree)
+				{
+					if(sideTwo != sideThree)
+						return true;
+				}
+			}
 			return false;
 		}
 
@@ -114,7 +152,34 @@ public class EvaluationService {
 	 */
 	public int getScrabbleScore(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		if (string == null || string.equals(""))
+			return -1;
+		int result = 0;
+		string = string.toLowerCase();
+		
+		String temp = string;
+        temp = temp.replaceAll("[^aeioulnrst]", "");
+        result += temp.length();
+        temp = string;
+        temp = temp.replaceAll("[^dg]", "");
+        result += temp.length() * 2;
+        temp = string;
+        temp = temp.replaceAll("[^bcmp]", "");
+        result += temp.length() * 3;
+        temp = string;
+        temp = temp.replaceAll("[^fhvwy]", "");
+        result += temp.length() * 4;
+        temp = string;
+        temp = temp.replaceAll("[^k]", "");
+        result += temp.length() * 5;
+        temp = string;
+        temp = temp.replaceAll("[^x]", "");
+        result += temp.length() * 8;
+        temp = string;
+        temp = temp.replaceAll("[^qz]", "");
+        result += temp.length() * 10;
+        
+		return result;
 	}
 
 	/**
@@ -148,9 +213,12 @@ public class EvaluationService {
 	 * Note: As this exercise only deals with telephone numbers used in
 	 * NANP-countries, only 1 is considered a valid country code.
 	 */
-	public String cleanPhoneNumber(String string) {
+	public String cleanPhoneNumber(String string) throws IllegalArgumentException {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String result = string.replaceAll("\\+1|[^\\d]", "");
+		if (result.length() != 10)
+			throw new IllegalArgumentException();
+		return result;
 	}
 
 	/**
@@ -264,6 +332,17 @@ public class EvaluationService {
 	 */
 	public boolean isArmstrongNumber(int input) {
 		// TODO Write an implementation for this method declaration
+		int length = (int)Math.log10(input) + 1;
+		int temp = 0;
+		
+		for (int i = 0; i < length; ++i)
+		{
+			temp += Math.pow(Character.getNumericValue(String.valueOf(input).charAt(i)), length);
+		}
+		
+		if (temp == input)
+			return true;
+		
 		return false;
 	}
 
