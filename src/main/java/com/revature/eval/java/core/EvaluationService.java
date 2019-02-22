@@ -1,6 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.lang.IllegalArgumentException;
@@ -356,9 +357,22 @@ public class EvaluationService {
 	 * @param l
 	 * @return
 	 */
-	public List<Integer> calculatePrimeFactorsOf(long l) {
+	public List<Long> calculatePrimeFactorsOf(long l) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		List<Long> result = new ArrayList<Long>();
+		
+		for(long i = 2; i <= l;)
+		{
+			if (l % i == 0)
+			{
+				l /= i;
+				result.add(i);
+			}
+			else
+				++i;
+		}
+		
+		return result;
 	}
 
 	/**
@@ -397,7 +411,28 @@ public class EvaluationService {
 
 		public String rotate(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			String result = "";
+			for(int i = 0; i < string.length(); ++i)
+			{
+	            char c = string.charAt(i);
+				if (c != '\u0000')
+				{
+	                int code = (int)c;
+					if (code >= 97 && code <= 122)
+					{
+						result += Character.toChars(97 + (((code - 97) + key) % 26))[0];
+					}
+					else if (code >= 65 && code <= 90)
+					{
+	                    result += Character.toChars(65 + (((code - 65) + key) % 26))[0];
+	                }
+	                else 
+	                {
+	                    result += c;
+	                }
+				}
+			}
+			return result;
 		}
 
 	}
@@ -414,9 +449,12 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
-	public int calculateNthPrime(int i) {
+	public int calculateNthPrime(int num) throws IllegalArgumentException {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		if (num == 0)
+			throw new IllegalArgumentException();
+		int result = 0;
+		return result;
 	}
 
 	/**
@@ -453,7 +491,19 @@ public class EvaluationService {
 		 */
 		public static String encode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			string = string.toLowerCase();
+	        string = string.replaceAll("[^a-z0-9]", "");
+	        String result = "";
+	        for (int i = 0; i < string.length(); ++i) {
+	            int charCode = (int)string.charAt(i);
+	            if (i != 0 && i % 5 == 0)
+	                result += " ";
+	            if (charCode >= 97)
+	                result += Character.toChars(122 - (Math.abs(97 - charCode)))[0];
+	            else
+	            	result += string.charAt(i);
+	        }
+	        return result;
 		}
 
 		/**
@@ -464,7 +514,16 @@ public class EvaluationService {
 		 */
 		public static String decode(String string) {
 			// TODO Write an implementation for this method declaration
-			return null;
+			String result = "";
+	        string = string.replaceAll(" ", "");
+	        for (int i = 0; i < string.length(); i++) {
+	            int charCode = (int)string.charAt(i);
+	            if (charCode >= 97)
+	                result += Character.toChars(97 + (Math.abs(122 - charCode)))[0];
+	            else
+	                result += string.charAt(i);
+	        }
+	        return result;
 		}
 	}
 
