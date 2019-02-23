@@ -313,7 +313,26 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String result = "";
+		int index = 0;
+		for (int i = 0; i < string.length(); ++i) {
+			char c = string.charAt(i);
+			if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+			{
+				if (i == 0)
+				{
+					return string += "ay";
+				}
+				else
+				{
+					index = i;
+					result += string.substring(i, string.length());
+					break;
+				}
+			}
+		}
+		
+		return result += string.substring(0, index) + "ay";
 	}
 
 	/**
@@ -499,7 +518,7 @@ public class EvaluationService {
 	            if (i != 0 && i % 5 == 0)
 	                result += " ";
 	            if (charCode >= 97)
-	                result += Character.toChars(122 - (Math.abs(97 - charCode)))[0];
+	                result += Character.toChars(122 - (charCode - 97))[0];
 	            else
 	            	result += string.charAt(i);
 	        }
@@ -519,7 +538,7 @@ public class EvaluationService {
 	        for (int i = 0; i < string.length(); i++) {
 	            int charCode = (int)string.charAt(i);
 	            if (charCode >= 97)
-	                result += Character.toChars(97 + (Math.abs(122 - charCode)))[0];
+	                result += Character.toChars(97 + (122 - charCode))[0];
 	            else
 	                result += string.charAt(i);
 	        }
@@ -551,7 +570,21 @@ public class EvaluationService {
 	 */
 	public boolean isValidIsbn(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		string = string.replaceAll("[^X0-9]", "");
+        if (string.length() < 10) return false;
+        
+        int result = 0;
+
+        for (int i = 0; i < 10; ++i) {
+            if (string.charAt(i) != 'X')
+                result += Character.getNumericValue(string.charAt(i)) * (10 - i);
+            else
+                result += 10 * (10 - i);
+        }
+
+        if (result % 11 == 0) return true;
+
+        return false; 
 	}
 
 	/**
@@ -569,7 +602,16 @@ public class EvaluationService {
 	 */
 	public boolean isPangram(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		if (string.length() < 26)
+			return false;
+		
+		for (char c = 'a'; c <= 'z'; ++c)
+		{
+			if (!string.contains(c + ""))
+				return false;
+		}
+		
+		return true;
 	}
 
 	/**
