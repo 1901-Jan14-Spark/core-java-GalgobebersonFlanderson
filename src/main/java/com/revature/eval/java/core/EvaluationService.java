@@ -770,7 +770,57 @@ public class EvaluationService {
 	 */
 	public int solveWordProblem(String string) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		int ind = 0, ind2 = 0;
+        int i;
+        for (i = 0; i < string.length(); ++i) {
+            if (string.codePointAt(i) >= (int)'0' && string.codePointAt(i) <= (int)'9' || string.charAt(i) == '-')
+            {
+                String temp = "";
+                if (ind != 0)
+                {
+                    ind2 = i + 1;
+                }
+                else
+                {
+                    ind = i;
+                }
+            } 
+        }
+        string = string.substring(ind, ind2);
+        int result = 0;
+        i = 0;
+        StringBuilder temp = new StringBuilder();
+        while(string.charAt(i) != ' ')
+        {
+            temp.append(string.charAt(i));
+            ++i;
+        }
+        result += Integer.parseInt(temp.toString());
+        temp.delete(0, temp.length());
+        i = string.length() - 1;
+        while(string.charAt(i) != ' ')
+        {
+            temp.append(string.charAt(i));
+            --i;
+        }
+        temp.reverse();
+        if (string.contains("plus"))
+        {
+            result += Integer.parseInt(temp.toString());
+        }
+        else if (string.contains("minus"))
+        {
+            result -= Integer.parseInt(temp.toString());
+        }
+        else if (string.contains("multiplied"))
+        {
+            result *= Integer.parseInt(temp.toString());
+        }
+        else if (string.contains("divided"))
+        {
+            result /= Integer.parseInt(temp.toString());
+        }
+		return result;
 	}
 
 }
