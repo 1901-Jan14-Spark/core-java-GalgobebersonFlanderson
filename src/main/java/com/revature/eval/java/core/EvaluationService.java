@@ -738,7 +738,52 @@ public class EvaluationService {
 	 */
 	public boolean isLuhnValid(String string) {
 		// TODO Write an implementation for this method declaration
-		return false;
+		if (string.length() <= 1)
+            return false;
+        string = string.replaceAll("\\s", "");
+        if (!string.matches("\\d+"))
+            return false;
+        StringBuilder sb = new StringBuilder();
+        int i;
+        for (i = string.length() - 1; i >= 0; --i) {
+            if (string.length() > 9)
+            {
+                int temp = 0;
+                if (i % 2 == 0)
+                {
+                    temp = Integer.parseInt(string.charAt(i) + "");
+                    temp *= 2;
+                    if (temp > 9)
+                        temp -= 9;
+                    sb.append(temp);
+                }
+                else
+                {
+                    sb.append(string.charAt(i));
+                }
+            }
+            else
+            {
+                int temp = 0;
+                if (i % 2 == 1)
+                {
+                    temp = Integer.parseInt(string.charAt(i) + "");
+                    temp *= 2;
+                    if (temp > 9)
+                        temp -= 9;
+                    sb.append(temp);
+                }
+                else
+                {
+                    sb.append(string.charAt(i));
+                }
+            }
+        }
+        int result = 0;
+        for (i = 0; i < sb.length(); ++i) {
+            result += Integer.parseInt(sb.charAt(i) + "");
+        }
+		return result % 10 == 0;
 	}
 
 	/**
@@ -775,7 +820,6 @@ public class EvaluationService {
         for (i = 0; i < string.length(); ++i) {
             if (string.codePointAt(i) >= (int)'0' && string.codePointAt(i) <= (int)'9' || string.charAt(i) == '-')
             {
-                String temp = "";
                 if (ind != 0)
                 {
                     ind2 = i + 1;
