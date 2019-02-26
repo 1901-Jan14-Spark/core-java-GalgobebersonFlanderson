@@ -1,9 +1,7 @@
 package com.revature.eval.java.core;
 
 import java.time.temporal.Temporal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.lang.IllegalArgumentException;
 
 public class EvaluationService {
@@ -233,7 +231,20 @@ public class EvaluationService {
 	 */
 	public Map<String, Integer> wordCount(String string) {
 		// TODO Write an implementation for this method declaration
-		return null;
+		String[] s = string.split("\\W");
+        Map<String, Integer> result = new TreeMap<String, Integer>();
+        for (int i = 0; i < s.length; i++) {
+            if (!s[i].isEmpty())
+            {
+                if (!result.containsKey(s[i]))
+                    result.put(s[i], 1);
+                else
+                {
+                    result.put(s[i], result.get(s[i]) + 1);
+                }
+            }
+        }
+		return result;
 	}
 
 	/**
@@ -313,26 +324,34 @@ public class EvaluationService {
 	 */
 	public String toPigLatin(String string) {
 		// TODO Write an implementation for this method declaration
-		String result = "";
-		int index = 0;
-		for (int i = 0; i < string.length(); ++i) {
-			char c = string.charAt(i);
-			if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
-			{
-				if (i == 0)
-				{
-					return string += "ay";
-				}
-				else
-				{
-					index = i;
-					result += string.substring(i, string.length());
-					break;
-				}
-			}
+		String[] split = string.split(" ");
+        String result = "";
+        for (int i = 0; i < split.length; ++i) 
+        {
+            for(int j = 0; j < split[i].length(); ++j)
+            {
+                char c = split[i].charAt(j);
+			    if (c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u')
+			    {
+				    if (j == 0)
+				    {
+                        result += split[i] + "ay" + " ";
+                        break;
+                    }
+                
+				    else
+				    {
+                        if (split[i].charAt(j - 1) == 'q')
+                            ++j;
+                        String temp = split[i].substring(j, split[i].length()) + split[i].substring(0, j) + "ay" + " ";
+                        result += temp;
+                        break;
+				    }
+                }
+            }
 		}
 		
-		return result += string.substring(0, index) + "ay";
+		return result.trim();
 	}
 
 	/**
@@ -468,12 +487,31 @@ public class EvaluationService {
 	 * @param i
 	 * @return
 	 */
+	private boolean isPrime(int num) 
+	{
+		for(int i = 2; i < num; ++i) 
+        {
+            if (num % i == 0) 
+            {
+                return false;
+            }
+        }
+        return true;
+	}
+	
 	public int calculateNthPrime(int num) throws IllegalArgumentException {
 		// TODO Write an implementation for this method declaration
 		if (num == 0)
 			throw new IllegalArgumentException();
-		int result = 0;
-		return result;
+		int check, count;
+	    for(check = 2, count = 0; count < num; ++check) 
+	    	{
+	    		if (isPrime(check)) 
+	    		{
+	    			++count;
+	    		}
+	    	}
+	    return check-1;
 	}
 
 	/**
@@ -640,9 +678,26 @@ public class EvaluationService {
 	 * @param set
 	 * @return
 	 */
-	public int getSumOfMultiples(int i, int[] set) {
+	public int getSumOfMultiples(int num, int[] set) {
 		// TODO Write an implementation for this method declaration
-		return 0;
+		Set<Integer> multi = new HashSet<>();
+        int result = 0;
+
+        for (int i = 0; i < set.length; ++i) 
+        {
+            for (int j = set[i]; j < num; ++j) 
+            {
+                if (j % set[i] == 0)
+                    multi.add(j);
+            }
+        }
+
+        for (Integer x : multi)
+        {
+            result += x;
+        }
+
+		return result;
 	}
 
 	/**
